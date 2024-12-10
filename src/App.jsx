@@ -213,9 +213,6 @@ function editTask() {
         ...doc.data(),
         id: doc.id
       }))
-      setUser({
-        ...newUser[newUser.length - 1]
-      })
     })
 
     return unsubscribe
