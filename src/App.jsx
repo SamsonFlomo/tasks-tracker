@@ -37,6 +37,13 @@ function App() {
 
   // HANDLE FUNCTIONS Arena
   // FIREBASE AND HANDLE USER 
+  //
+  function toggleNext() {
+    setUser(prevUser => ({
+      ...prevUser,
+      next: !prevUser.next
+    }))
+  }
   function saveUserToState(e) {
     setUser({
       ...user,
@@ -264,7 +271,7 @@ function editTask() {
           <Startup
             user={user}
             handleChange={saveUserToState}
-            handleClick={updateUserDb}
+            handleClick={toggleNext}
           />
       }
 
