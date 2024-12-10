@@ -1,0 +1,270 @@
+/* GENERAL AND GENERIC STYLES */
+
+:root {
+  --bg-color: #f2f2f2;
+  --primary-txt-color: #000000;
+  --secondary-txt-color: #ffffff;
+  --btn-bg: #00f;
+  --task-wrapper-bg: #bbdefb;
+  --del-btn-bg: #fc4850;
+  --shadow-color: rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode {
+  --bg-color: #000000;
+  --primary-txt-color: #ffffff;
+  --secondary-txt-color: #ffffff;
+  --btn-bg: #00f;
+  --task-wrapper-bg: #bbdefb;
+  --del-btn-bg: #fc4850;
+  --shadow-color: rgba(285, 285, 285, 0.4);
+}
+
+#root {
+  background-color: var(--bg-color);
+  color: var(--primary-txt-color);
+}
+
+#App {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  justify-content: center;
+  background-color: var(--bg-color);
+  color: var(--primary-txt-color);
+}
+
+/* WRAPPER DIVS */
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* ALL BUTTONS */
+.btn {
+  font-family: "Alike Angular";
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+}
+
+.st.btn {
+  color: var(--secondary-txt-color);
+  background-color: var(--btn-bg);
+  box-shadow: 2px 2px 7px var(--shadow-color);
+  font-weight: bold;
+}
+
+.st.btn:hover {
+  background-color: var(--primary-txt-color);
+  color: var(--bg-color);
+}
+
+.bold {
+  font-weight: bold;
+}
+
+/* NAVBAR COMPONENT */
+.nav {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  box-shadow: 2px 2px 8px var(--shadow-color);
+  min-height: 3rem;
+  padding: .5rem;
+}
+
+.nav-btn {
+  margin-left: 1.5rem;
+  box-shadow: inset 1px 1px 2px var(--shadow-color), 1px 1px 2px var(--shadow-color);
+  background-color: var(--primary-txt-color);
+  color: var(--bg-color);
+}
+
+
+/*  WELCOME COMPONENT STYLING */
+.welcome-page {
+  max-width: 600px;
+  height: 100%;
+  background-blend-mode: normal;
+  gap: 1.5rem;
+  padding: 1rem;
+  color: var(--primary-txt-color);
+  /* MAKE THE FONT WORK */
+  font-family: "Alike Angular";
+}
+
+.begin.st.btn {
+  min-width: 3rem;
+  font-size: 2rem;
+  margin-top: .5rem;
+  font-weight: bold;
+}
+
+.title {
+  font-size: 3rem;
+  color: var(--primary-txt-color);
+}
+
+/* MAIN COMPONENT STYLING */
+.main {
+  color: var(--primary-txt-color);
+  margin-top: 1rem;
+  max-width: 600px;
+  width: 100%;
+  height: 100%;
+  background-blend-mode: normal;
+  gap: 1.2rem;
+  /* MAKE THE FONT WORK */
+  font-family: "Alike Angular";
+}
+
+
+/* Task List */
+.task-list {
+  max-height: 40vh;
+  background-color: red;
+  width: 100%;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow-y: auto;
+  border-radius: 5px;
+  background: var(--task-wrapper-bg);
+}
+
+.task {
+  display: grid;
+  grid-template-columns: 2.5fr 1.5fr .5fr .5fr;
+  grid-template-rows: 1fr;
+  align-items: center;
+  justify-items: center;
+  padding: .5rem;
+  background-color: var(--bg-color);
+  color: var(--primary-txt-color);
+  padding: .2rem;
+  width: 100%;
+  border-radius: 5px;
+  box-shadow: 2px 2px 7px var(--shadow-color);
+  font-weight: bold;
+  gap: .2rem;
+}
+
+.task:hover span {
+  background-color: var(--primary-txt-color);
+  color: var(--bg-color);
+}
+
+.task span {
+  background-color: #757575;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: .2rem;
+  border-radius: 5px;
+  color: var(--secondary-txt-color);
+  text-transform: uppercase;
+
+}
+
+/* EDIT BTN */
+.edit.st.btn {
+  background-color: #4CAF50;
+  color: var(--secondary-txt-color);
+  box-shadow: 2px 2px 7px var(--shadow-color);
+}
+
+addtask.st.btn {
+  background-color: var(--primary-txt-color);
+  color: var(--secondary-txt-color);
+  box-shadow: 2px 2px 7px var(--shadow-color);
+  font-weight: bold;
+}
+
+.remove.btn {
+  background-color: var(--del-btn-bg);
+  color: var(--secondary-txt-color);
+  height: 100%;
+}
+
+.remove-all.btn {
+  background-color: var(--del-btn-bg);
+  color: var(--secondary-txt-color);
+}
+
+/* MODIFY TASK */
+.modify-task {
+  max-width: 500px;
+  max-height: 50vh;
+  background-blend-mode: normal;
+  padding: 3rem;
+  color: var(--primary-txt-color);
+  /* MAKE THE FONT WORK */
+  font-family: "Alike Angular";
+  background-color: var(--primary-txt-color);
+  color: var(--bg-color);
+  border-radius: 5px;
+  box-shadow: 2px 2px 7px var(--shadow-color);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  width: 95%;
+}
+
+.modify-task label {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  font-weight: bold;
+  font-size: 1.2rem;
+  padding: .2rem;
+}
+
+.buttons-wrapper {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+
+
+.bottons-wrapper .st.btn {
+  width: 4rem;
+}
+
+.cancel.st.btn {
+  background-color: var(--del-btn-bg);
+  color: var(--secondary-txt-color);
+}
+
+
+@media screen and (max-width: 500px) {
+  .modify-task {
+    justify-content: center;
+    padding: 1.5rem;
+  }
+
+  .modify-task label {
+    font-size: 1rem;
+  }
+
+  .modify-task input {
+    width: 70%;
+  }
+
+}

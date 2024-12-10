@@ -1,0 +1,267 @@
+import { useState, useEffect } from 'react'
+import './App.css'
+import Startup from './components/Startup'
+import NavBar from './components/NavBar'
+import Main from './components/Main'
+import Modify from './components/modify'
+import { Container } from 'react-bootstrap'
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+// FIREBASE IMPORTS
+import { onSnapshot, addDoc } from 'firebase/firestore';
+import { taskCollection, userCollection } from './firebase';
+
+
+
+function App() {
+
+
+  const [user, setUser] = useState({
+    name: "",
+    next: false,
+    id: ""
+  })
+
+  const [tasks, setTasks] = useState([{
+    description: "",
+    timeFrame: "",
+    isEdit: false,
+    id: 1
+  },])
+
+  const [editedTask, setEditedTask] = useState({
+    description: "React",
+    timeFrame: "Task Time",
+    isEdit: false,
+    id: 1
+  })
+
+  const [mode, setMode] = useState(JSON.parse(window.localStorage.getItem("mode")) || false)
+
+  // HANDLE FUNCTIONS
+  // FIREBASE AND HANDLE USER 
+  function saveUserToState(e) {
+    setUser({
+      ...user,
+      [e.target.name]: e.target.value
+    })
+  }
+
+  async function updateUserDb() {
+    const docRef = await addDoc(userCollection, {
+      name: user.name,
+      next: !user.next
+    })
+    setUser(prevUser => ({
+      ...prevUser,
+      id: docRef.id
+    }))
+  }
+
+  // FIREBASE AND HANDLE TASKS
+  async function saveTasksToDb() {
+    tasks.forEach(async (task) => {
+      await addDoc(taskCollection, {
+        description: task.description,
+        timeFrame: task.timeFrame,
+        isEdit: task.isEdit,
+        id: task.id
+      })
+    })
+  }
+
+  //MAIN AND TASKS
+
+  function removeTask(id) {
+    setTasks(prevTasks => prevTasks.filter(task => task.id !== id))
+  }
+
+  function removeAllTasks() {
+    setTasks([])
+  }
+
+  function handleCancel() {
+    setEditedTask(prevTask => ({
+      ...prevTask,
+      isEdit: !prevTask.isEdit
+    }))
+  }
+
+  function toggleIsEdit(id) {
+    setTasks(prevTasks => prevTasks.map(task => {
+      if (task.id === id) {
+        return {
+          ...task,
+          isEdit: true
+        }
+      }
+      // UPDATE THE EDITED TASK
+      setEditedTask(task)
+      return task
+    }))
+  }
+
+  // ADD TASK
+
+  function addTask() {
+    const newTask = {
+      description: "NAME",
+      timeFrame: "TIME",
+      isEdit: true,
+      id: Date.now()
+    }
+    setTasks(prevTasks => [newTask, ...prevTasks])
+    setEditedTask(newTask)
+  }
+
+  // EDIT TASK
+  function handleEditChange(e) {
+    setEditedTask(prevTask => ({
+      ...prevTask,
+      [e.target.name]: e.target.value
+    }))
+
+    console.log("HandleEditChang is running")
+  }
+
+  function editTask() {
+    setTasks(prevTasks => prevTasks.map(task => {
+      if (task.id === editedTask.id) {
+        return {
+          ...task,
+          description: editedTask.description,
+          timeFrame: editedTask.timeFrame,
+          isEdit: false
+        }
+      }
+      setEditedTask(task)
+      return task
+    }))
+  }
+
+  // MODE
+  function toggleMode() {
+    setMode(prevMode => !prevMode)
+  }
+
+
+  // USEEFFECTS
+  // FOR USER
+  useEffect(() => {
+    const unsubscribe = onSnapshot(userCollection, (snapshot) => {
+      const newUser = snapshot.docs.map(doc => ({
+        ...doc.data(),
+        id: doc.id
+      }))
+      setUser({
+        ...newUser[newUser.length - 1]
+      })
+    })
+
+    return unsubscribe
+  }, [])
+
+  // FOR TASKS
+  useEffect(() => {
+    const unsubscribe = onSnapshot(taskCollection, (snapshot) => {
+      const newTask = snapshot.docs.map(doc => ({
+        ...doc.data(),
+        id: doc.id
+      }))
+      setTasks(newTask)
+    })
+
+    return unsubscribe
+  }, [])
+
+  // FOR MODE
+  useEffect(() => {
+    const cleanMode = () => {
+      window.localStorage.setItem("mode", JSON.stringify(mode))
+    }
+
+    return cleanMode
+  }, [mode])
+
+
+  // RENDER
+
+  /*
+      
+  {
+        user.next ?
+          <Main
+            name={user.name}
+            tasks={tasks}
+            addTask={addTask}
+            removeTask={removeTask}
+            removeAllTasks={removeAllTasks}
+            toggleIsEdit={toggleIsEdit}
+          /> :
+          <Startup
+            user={user}
+            handleChange={saveUserToState}
+            handleClick={updateUserDb}
+          />
+        }
+
+
+        {
+          editedTask.isEdit &&
+          <Modify
+            handleEditChange={handleEditChange}
+            editedTask={editedTask}
+            toggleIsEdit={toggleIsEdit}
+            tasks={tasks}
+            editTask={editTask}
+          />
+        }
+
+
+*/
+
+  console.log(editedTask)
+
+
+  return (
+    <Container id="App" className={mode ? "dark-mode" : ""} fluid>
+      <NavBar
+        mode={mode}
+        toggleMode={toggleMode}
+      />
+
+      {
+        user.next ?
+          <Main
+            name={user.name}
+            tasks={tasks}
+            addTask={addTask}
+            removeTask={removeTask}
+            removeAllTasks={removeAllTasks}
+            toggleIsEdit={toggleIsEdit}
+          /> :
+          <Startup
+            user={user}
+            handleChange={saveUserToState}
+            handleClick={updateUserDb}
+          />
+      }
+
+
+      {
+        editedTask.isEdit &&
+        <Modify
+          handleChange={handleEditChange}
+          editedTask={editedTask}
+          toggleIsEdited={toggleIsEdit}
+          tasks={tasks}
+          editTask={editTask}
+          handleCancel={handleCancel}
+        />
+      }
+
+    </Container>
+  )
+}
+
+export default App; 
