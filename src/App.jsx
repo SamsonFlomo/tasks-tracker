@@ -35,7 +35,7 @@ function App() {
 
   const [mode, setMode] = useState(JSON.parse(window.localStorage.getItem("mode")) || false)
 
-  // HANDLE FUNCTIONS
+  // HANDLE FUNCTIONS Arena
   // FIREBASE AND HANDLE USER 
   function saveUserToState(e) {
     setUser({
